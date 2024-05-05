@@ -1,0 +1,8 @@
+# Ignore all no extension files excluding makefile
+*
+!/**/
+!*.*
+!makefile
+
+*.o
+/.vscode
