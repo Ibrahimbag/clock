@@ -1,4 +1,4 @@
-/* This program displays numbers in the terminal with ncurses */
+/* Displays clock in the terminal with ncurses */
 
 #include "digits.h"
 #include <locale.h>
@@ -27,6 +27,12 @@ int main(int argc, char *argv[])
         return 1;
     }
 
+    if (argc == 2 && (atoi(argv[1]) < 1 || atoi(argv[1]) > 7))
+    {
+        fprintf(stderr, "Usage: %s [color_code (1-7)]\n", argv[0]);
+        return 1;
+    }
+    
     /* Support unicode characters */
     setlocale(LC_ALL, "");
     
