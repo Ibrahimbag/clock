@@ -6,7 +6,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/ioctl.h>
 #include <time.h>
 #include <unistd.h>
 
@@ -37,8 +36,8 @@ int main(int argc, char *argv[])
     setlocale(LC_ALL, "");
     
     /* Initialize ncurses */
-    WINDOW *win = initscr();
-    nodelay(win, true);
+    WINDOW *stdscr = initscr();
+    nodelay(stdscr, true);
     curs_set(false);
     noecho();
     if (has_colors() == true)
@@ -50,17 +49,18 @@ int main(int argc, char *argv[])
     /* Set the terminal color. Default is white */
     if (has_colors() == true && argc == 2)
     {
-        for (int i = 1; i <= 7; i++)
+        for (int i = 1; i < 8; i++)
         {
             if (atoi(argv[1]) == i)
             {
                 set_color(i);
+                break;
             }
         }
     }
 
     /* Don't close the clock until someone presses the 'q' key */
-    while (wgetch(win) != 'q')
+    while (getch() != 'q')
     {
         /* Get the current time */
         time_t rawtime;
@@ -68,19 +68,20 @@ int main(int argc, char *argv[])
         time(&rawtime);
         timeinfo = localtime(&rawtime);
         
-        /* Get the height and width of the terminal */
-        struct winsize w;
-        ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-        int screen_height = w.ws_row, screen_width = w.ws_col;
-
         /* Create a buffer to store the time in */
         char buffer[MAX_DIGIT + 1];
         snprintf(buffer, sizeof(buffer), "%02d:%02d", timeinfo->tm_hour, timeinfo->tm_min);
+        
+        /* Get the size of the terminal */
+        int screen_height, screen_width;
+        getmaxyx(stdscr, screen_height, screen_width);
+
+        /* Get the position to display the clock */
+        int x = screen_width / 2 - 17;
+        int y = screen_height / 2 - 2;
 
         /* Display the clock to the terminal */
         erase();
-        int x = (screen_width / 2 - (3 * 12 + MAX_DIGIT - 1)) + 23;
-        int y = screen_height / 2 - 2;
         for (size_t i = 0; i < strlen(buffer); i++)
         {
             switch (buffer[i]) 
@@ -99,9 +100,6 @@ int main(int argc, char *argv[])
             }
             x += 7;
         }
-
-        /* Display the output */
-        wrefresh(win);
     }
 
     endwin();
