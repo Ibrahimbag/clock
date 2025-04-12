@@ -5,6 +5,7 @@ A simple command-line clock displayer inspired from [tty-clock](https://github.c
 ## Installation (Debian/Ubuntu and their derivatives only)
 
 ```console
+git clone https://github.com/Ibrahimbag/clock.git; \
 cd clock; \
 sudo apt install libncurses5-dev; \
 make
