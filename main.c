@@ -49,14 +49,7 @@ int main(int argc, char *argv[])
     /* Set the terminal color. Default is white */
     if (has_colors() == true && argc == 2)
     {
-        for (int i = 1; i < 8; i++)
-        {
-            if (atoi(argv[1]) == i)
-            {
-                set_color(i);
-                break;
-            }
-        }
+        set_color(atoi(argv[1]));
     }
 
     /* Don't close the clock until someone presses the 'q' key */
