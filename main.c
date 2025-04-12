@@ -93,6 +93,10 @@ int main(int argc, char *argv[])
             }
             x += 7;
         }
+
+        /* To avoid high CPU usage */
+        struct timespec ts = {0, 10000000};  
+        nanosleep(&ts, NULL);
     }
 
     endwin();

@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra -Wpedantic -std=c11 -g
+CFLAGS = -Wall -Werror -Wextra -Wpedantic -std=c11 -g -D _DEFAULT_SOURCE
 LIBS = -lncursesw
 OBJ = main.o digits.o
 HEADERS = digits.h
